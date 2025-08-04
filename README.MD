@@ -1,0 +1,42 @@
+# XOps Static Web Page Project
+
+## Overview
+
+This project contains a simple, designed HTML page that displays:
+
+![XOps Site](./site.png)
+
+
+---
+
+## Files
+
+- **index.html**  
+  Contains the HTML code and CSS styles for the XOps welcome page.
+
+- **DockerFile**  
+  Defines instructions to build a Docker image using [Nginx](https://nginx.org/) on Alpine Linux to serve the static HTML page.
+
+---
+
+## How the DockerFile Works
+
+```dockerfile
+FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/index.html
+EXPOSE 80
+```
+
+---
+## To Build and Run
+
+1. **Build the Docker Image**  
+   Open a terminal in the project directory and run:
+   ```bash
+   docker build -t xops-welcome-page .
+   ```
+2. **Run the Docker Container**  
+   After the image is built, run the container with:
+   ```bash
+   docker run -p 8080:80 xops-welcome-page
+   ```
