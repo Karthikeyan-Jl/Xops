@@ -40,3 +40,6 @@ EXPOSE 80
    ```bash
    docker run -p 8080:80 xops-welcome-page
    ```
+   ---
+3. **Access the Page**  
+   Open a web browser and navigate to `http://localhost:8080` to view the XOps welcome page.
