@@ -44,6 +44,6 @@ jobs:
               pip3 install flask
             fi
 
-            # Run Flask on port 5000 (non-root safe)
+            # Run Flask on port 80 (non-root safe)
             nohup python3 app.py > app.log 2>&1 &
           EOF
