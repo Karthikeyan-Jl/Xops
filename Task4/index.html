@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🚀 DevOps Challenge – Terraform + Ansible</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --card: rgba(255,255,255,0.08);
+      --card-2: rgba(255,255,255,0.06);
+      --text: #e8eef9;
+      --muted: #adb7c9;
+      --accent: #7cf4c7;
+      --accent-2:#7aa2ff;
+      --warn:#ffd166;
+      --ok:#7cf4c7;
+      --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 80% -10%, #2b2c7a22, transparent 60%),
+        radial-gradient(1000px 700px at -10% 120%, #00c2ff16, transparent 55%),
+        linear-gradient(160deg, #0b1020 0%, #111732 100%);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.6;
+      letter-spacing:.2px;
+    }
+    .wrap{min-height:100%; display:grid; place-items:center; padding:40px 18px}
+    .container{width:100%; max-width:1000px}
+    .hero{
+      display:grid; gap:18px; padding:28px; border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 12px; border-radius:999px;
+      background:linear-gradient(180deg, rgba(124,244,199,.18), rgba(124,244,199,.1));
+      border:1px solid rgba(124,244,199,.35); color:#0c1d17;
+      font-weight:600; font-size:12px; letter-spacing:.4px; text-transform:uppercase;
+    }
+    .title{
+      font-size: clamp(28px, 4vw, 44px);
+      line-height:1.15; margin:4px 0 6px; font-weight:800;
+      text-wrap:balance;
+    }
+    .title .grad{
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip:text; color:transparent;
+      text-shadow: 0 0 20px #7cf4c722;
+    }
+    .lead{color:var(--muted); font-size: clamp(15px, 2.2vw, 18px); margin:0}
+    .grid{
+      margin-top:22px; display:grid; gap:18px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .card{
+      grid-column: span 12;
+      background:var(--card); border:1px solid rgba(255,255,255,.08);
+      border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);
+    }
+    @media (min-width: 900px){
+      .card.span-5{grid-column: span 5;}
+      .card.span-7{grid-column: span 7;}
+    }
+    .card h3{margin:0 0 10px; font-size:18px; letter-spacing:.3px}
+    .list{display:grid; gap:10px; padding:0; margin:0; list-style:none}
+    .item{display:flex; align-items:flex-start; gap:12px; background:var(--card-2);
+      padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.06)}
+    .item svg{flex:0 0 auto; opacity:.9}
+    .mono{
+      background:#0a0f22;
+      border:1px solid rgba(124,162,255,.25);
+      color:#d7e3ff;
+      border-radius:14px; padding:14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 13.5px; overflow:auto;
+    }
+    .kpis{display:flex; gap:14px; flex-wrap:wrap; margin-top:6px}
+    .pill{
+      display:flex; align-items:center; gap:8px; padding:10px 12px;
+      border-radius:12px; background:var(--card-2); border:1px solid rgba(255,255,255,.06);
+      color:var(--muted); font-weight:600; font-size:13px;
+    }
+    .btnrow{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px}
+    .btn{
+      appearance:none; border:0; cursor:pointer; font-weight:700; letter-spacing:.3px;
+      padding:12px 16px; border-radius:12px; transition:.2s transform, .2s box-shadow, .2s filter;
+    }
+    .btn.primary{
+      background:linear-gradient(90deg, var(--accent), var(--accent-2));
+      color:#051016; box-shadow:0 10px 25px rgba(122,162,255,.25);
+    }
+    .btn.ghost{
+      background:transparent; color:var(--text);
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .status{
+      display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px;
+      margin-top:6px
+    }
+    .dot{width:10px; height:10px; border-radius:50%; background:var(--ok); box-shadow:0 0 12px var(--ok)}
+    footer{
+      margin-top:18px; text-align:center; color:#99a5bd; font-size:12.5px
+    }
+    .code-tag{
+      display:inline-flex; gap:8px; align-items:center; padding:8px 10px;
+      border-radius:10px; background: #0c122a; border:1px solid rgba(122,162,255,.25);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12.5px
+    }
+    a{color:var(--accent-2); text-decoration:none}
+    a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="container">
+      <section class="hero">
+        <span class="badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.09 6.26H20l-5.17 3.76 1.97 6.11L12 14.77 7.2 18.13l1.97-6.11L4 8.26h5.91L12 2z"/></svg>
+          DevOps Challenge
+        </span>
+        <h1 class="title">Hello from <span class="grad">Terraform</span> + <span class="grad">Ansible</span>! 🚀</h1>
+        <p class="lead">This web app was provisioned with <strong>Terraform (EC2 + Security Groups + User Data)</strong> and configured by <strong>Ansible (NGINX + index.html)</strong>. Fully automated, agentless, and reproducible.</p>
+
+        <div class="kpis">
+          <div class="pill">☁️ AWS EC2: <strong>t3.micro</strong></div>
+          <div class="pill">🌎 HTTP: <strong>Port 80</strong></div>
+          <div class="pill">🔐 SSH: <strong>Key Pair</strong></div>
+          <div class="pill">🧩 NGINX: <strong>Running</strong></div>
+        </div>
+
+        <div class="btnrow">
+          <a class="btn primary" href="#" onclick="location.reload()">Verify Deployment</a>
+          <a class="btn ghost" href="http://localhost" onclick="event.preventDefault()">View Logs (demo)</a>
+          <span class="status"><span class="dot"></span>Deployment healthy</span>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="card span-7">
+          <h3>Pipeline Summary</h3>
+          <ul class="list">
+            <li class="item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#7aa2ff" aria-hidden="true"><path d="M12 3l10 6-10 6L2 9l10-6zm0 9l10 6-10 6-10-6 10-6z"/></svg>
+              <div><strong>Infrastructure</strong> created by Terraform: VPC networking (via AWS defaults), Security Group (22/80), and EC2 with user-data bootstrapping Python.</div>
+            </li>
+            <li class="item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#7cf4c7" aria-hidden="true"><path d="M20 6H4v12h16V6zM8 8h8v2H8V8zm0 4h8v2H8v-2z"/></svg>
+              <div><strong>Configuration</strong> applied by Ansible: install &amp; enable NGINX, deploy this HTML, ensure idempotency.</div>
+            </li>
+            <li class="item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffd166" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5v6h5v2h-7V7h2z"/></svg>
+              <div><strong>Speed</strong>: zero-click provisioning after <span class="code-tag">$ terraform apply</span> &rarr; <span class="code-tag">$ ansible-playbook</span>.</div>
+            </li>
+          </ul>
+        </article>
+
+        <aside class="card span-5">
+          <h3>Re-run locally</h3>
+          <div class="mono">
+            # 1) Provision infra<br/>
+            terraform init && terraform apply -auto-approve<br/><br/>
+            # 2) Update inventory with EC2 IP<br/>
+            echo "[web]\n&lsaquo;EC2_IP&rsaquo; ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/terraform-key" &gt; inventory<br/><br/>
+            # 3) Configure with Ansible<br/>
+            ansible-playbook -i inventory site.yml<br/><br/>
+            # 4) Test<br/>
+            open http://&lsaquo;EC2_IP&rsaquo;  # or xdg-open
+          </div>
+          <p class="status" style="margin-top:12px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#7cf4c7" aria-hidden="true"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19l11-11-1.5-1.5z"/></svg>
+            Tip: remember <strong>terraform destroy</strong> to avoid charges.
+          </p>
+        </aside>
+
+        <article class="card">
+          <h3>About this Demo</h3>
+          <p style="margin-top:6px; color:var(--muted)">
+            Built to showcase an end-to-end DevOps flow: <em>Infrastructure as Code</em> with Terraform + <em>Configuration Management</em> with Ansible.
+            The UI here is a sleek, accessible, single-file design (no external dependencies) that you can customize freely.
+          </p>
+        </article>
+      </section>
+
+      <footer>
+        <span>© <script>document.write(new Date().getFullYear())</script> DevOps Challenge • Terraform + Ansible • NGINX</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
