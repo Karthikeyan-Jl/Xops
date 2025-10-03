@@ -21,8 +21,22 @@
 ✅ Restrict RBAC access to Secrets  
 
 ## Verification
+---
+
 - **ConfigMap as env vars** ✅
+  
+<img width="1409" height="794" alt="Screenshot 2025-10-03 100337" src="https://github.com/user-attachments/assets/96924e50-bce7-4602-831c-1744ab200571" />
+
+---
 
 - **ConfigMap as mounted files** ✅
 
+<img width="1109" height="145" alt="Screenshot 2025-10-03 100903" src="https://github.com/user-attachments/assets/4dac3c5c-96a0-4382-b6ad-49922ff42b5a" />
+
+---
+
 - **Secret as env vars** ✅
+
+<img width="1055" height="265" alt="Screenshot 2025-10-03 101211" src="https://github.com/user-attachments/assets/ae23f6bd-90e3-4131-8279-8354ce5e1864" />
+
+---
